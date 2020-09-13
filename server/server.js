@@ -1,44 +1,20 @@
 require('./config/config');
 
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser')
+const express = require('express');
+const mongoose = require('mongoose');
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+const app = express();
 
-// parse application/json
-app.use(bodyParser.json())
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }, (err, res) => {
+    if (err) return Error(err);
 
-app.get('/usuario', (req, res) => {
-    res.send('GetUsuarios')
-})
+    console.log('Base de datos conectada');
 
-app.post('/usuario', (req, res) => {
+});
 
-    let body = req.body;
+app.use(require('./controllers/usuario'));
 
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            ok: false,
-            mensaje: 'El nombre es necesario'
-        });
-    } else {
-        res.send(body)
-    }
-})
-
-app.put('/usuario/:id', (req, res) => {
-
-    let id = req.params.id;
-
-    res.send('PutUsuarios ' + id)
-})
-
-app.delete('/usuario', (req, res) => {
-    res.send('DeleteUsuarios')
-})
 
 app.listen(process.env.PORT, () => {
     console.log(`Estoy en la url: http://localhost:${process.env.PORT}`)
-})
+});
