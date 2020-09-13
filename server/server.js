@@ -12,7 +12,7 @@ mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: tru
 
 });
 
-app.use(require('./controllers/usuario'));
+app.use(require('./controllers/index'));
 
 
 app.listen(process.env.PORT, () => {
